@@ -23,9 +23,10 @@ const getEpisode = cache(async (id: string) => {
 export async function generateMetadata({
   params,
 }: {
-  params: { episode: string }
+  params: Promise<{ episode: string }>
 }) {
-  let episode = await getEpisode(params.episode)
+  let { episode: episodeId } = await params
+  let episode = await getEpisode(episodeId)
 
   return {
     title: episode.title,
@@ -35,9 +36,10 @@ export async function generateMetadata({
 export default async function Episode({
   params,
 }: {
-  params: { episode: string }
+  params: Promise<{ episode: string }>
 }) {
-  let episode = await getEpisode(params.episode)
+  let { episode: episodeId } = await params
+  let episode = await getEpisode(episodeId)
   let date = new Date(episode.published)
 
   return (
